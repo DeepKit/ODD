@@ -1,0 +1,29 @@
+contract:
+  id: "SYS-001"
+  title: "Deep Space Node Security Protocol"
+  version: "1.0.0"
+  scope_in: "Basic file operations and data processing"
+  scope_out: "System level administration"
+
+  hard_constraints:
+    - constraint: "No use of os.system or subprocess"
+      hardness: hard
+      executability: EN
+      check_logic: "ast_scan"
+      forbidden_calls:
+        - "os.system"
+        - "subprocess.call"
+        - "subprocess.Popen"
+
+    - constraint: "No deletion of log files"
+      hardness: hard
+      executability: EN
+      check_logic: "regex_scan"
+      pattern: 'rm\s+.*log|os\.remove|shutil\.rmtree'
+
+  red_lines:
+    - "Do not damage the integrity of the historical record (Log Immutability)"
+    - "Do not impersonate a human commander"
+
+  deviation_budget:
+    tolerance: 0.0
